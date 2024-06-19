@@ -482,6 +482,144 @@ input ImageRelateToOneForCreateInput {
   connect: ImageWhereUniqueInput
 }
 
+type Podcast {
+  id: ID!
+  name: String
+  thumbnail: Image
+  description: String
+}
+
+input PodcastWhereUniqueInput {
+  id: ID
+}
+
+input PodcastWhereInput {
+  AND: [PodcastWhereInput!]
+  OR: [PodcastWhereInput!]
+  NOT: [PodcastWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  thumbnail: ImageWhereInput
+  description: StringFilter
+}
+
+input PodcastOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+}
+
+input PodcastUpdateInput {
+  name: String
+  thumbnail: ImageRelateToOneForUpdateInput
+  description: String
+}
+
+input PodcastUpdateArgs {
+  where: PodcastWhereUniqueInput!
+  data: PodcastUpdateInput!
+}
+
+input PodcastCreateInput {
+  name: String
+  thumbnail: ImageRelateToOneForCreateInput
+  description: String
+}
+
+type Video {
+  id: ID!
+  name: String
+  thumbnail: Image
+  url: String
+}
+
+input VideoWhereUniqueInput {
+  id: ID
+}
+
+input VideoWhereInput {
+  AND: [VideoWhereInput!]
+  OR: [VideoWhereInput!]
+  NOT: [VideoWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  thumbnail: ImageWhereInput
+  url: StringFilter
+}
+
+input VideoOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  url: OrderDirection
+}
+
+input VideoUpdateInput {
+  name: String
+  thumbnail: ImageRelateToOneForUpdateInput
+  url: String
+}
+
+input VideoUpdateArgs {
+  where: VideoWhereUniqueInput!
+  data: VideoUpdateInput!
+}
+
+input VideoCreateInput {
+  name: String
+  thumbnail: ImageRelateToOneForCreateInput
+  url: String
+}
+
+type Book {
+  id: ID!
+  name: String
+  author: String
+  thumbnail: Image
+  url: String
+}
+
+input BookWhereUniqueInput {
+  id: ID
+  author: String
+}
+
+input BookWhereInput {
+  AND: [BookWhereInput!]
+  OR: [BookWhereInput!]
+  NOT: [BookWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  author: StringFilter
+  thumbnail: ImageWhereInput
+  url: StringFilter
+}
+
+input BookOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  author: OrderDirection
+  url: OrderDirection
+}
+
+input BookUpdateInput {
+  name: String
+  author: String
+  thumbnail: ImageRelateToOneForUpdateInput
+  url: String
+}
+
+input BookUpdateArgs {
+  where: BookWhereUniqueInput!
+  data: BookUpdateInput!
+}
+
+input BookCreateInput {
+  name: String
+  author: String
+  thumbnail: ImageRelateToOneForCreateInput
+  url: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -524,6 +662,24 @@ type Mutation {
   updateActivists(data: [ActivistUpdateArgs!]!): [Activist]
   deleteActivist(where: ActivistWhereUniqueInput!): Activist
   deleteActivists(where: [ActivistWhereUniqueInput!]!): [Activist]
+  createPodcast(data: PodcastCreateInput!): Podcast
+  createPodcasts(data: [PodcastCreateInput!]!): [Podcast]
+  updatePodcast(where: PodcastWhereUniqueInput!, data: PodcastUpdateInput!): Podcast
+  updatePodcasts(data: [PodcastUpdateArgs!]!): [Podcast]
+  deletePodcast(where: PodcastWhereUniqueInput!): Podcast
+  deletePodcasts(where: [PodcastWhereUniqueInput!]!): [Podcast]
+  createVideo(data: VideoCreateInput!): Video
+  createVideos(data: [VideoCreateInput!]!): [Video]
+  updateVideo(where: VideoWhereUniqueInput!, data: VideoUpdateInput!): Video
+  updateVideos(data: [VideoUpdateArgs!]!): [Video]
+  deleteVideo(where: VideoWhereUniqueInput!): Video
+  deleteVideos(where: [VideoWhereUniqueInput!]!): [Video]
+  createBook(data: BookCreateInput!): Book
+  createBooks(data: [BookCreateInput!]!): [Book]
+  updateBook(where: BookWhereUniqueInput!, data: BookUpdateInput!): Book
+  updateBooks(data: [BookUpdateArgs!]!): [Book]
+  deleteBook(where: BookWhereUniqueInput!): Book
+  deleteBooks(where: [BookWhereUniqueInput!]!): [Book]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -565,6 +721,15 @@ type Query {
   activists(where: ActivistWhereInput! = {}, orderBy: [ActivistOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivistWhereUniqueInput): [Activist!]
   activist(where: ActivistWhereUniqueInput!): Activist
   activistsCount(where: ActivistWhereInput! = {}): Int
+  podcasts(where: PodcastWhereInput! = {}, orderBy: [PodcastOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PodcastWhereUniqueInput): [Podcast!]
+  podcast(where: PodcastWhereUniqueInput!): Podcast
+  podcastsCount(where: PodcastWhereInput! = {}): Int
+  videos(where: VideoWhereInput! = {}, orderBy: [VideoOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: VideoWhereUniqueInput): [Video!]
+  video(where: VideoWhereUniqueInput!): Video
+  videosCount(where: VideoWhereInput! = {}): Int
+  books(where: BookWhereInput! = {}, orderBy: [BookOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookWhereUniqueInput): [Book!]
+  book(where: BookWhereUniqueInput!): Book
+  booksCount(where: BookWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

@@ -5,6 +5,9 @@ import { Tag } from './lists/tag';
 import { Image } from './lists/image';
 import { Event } from './lists/event';
 import { Activist } from './lists/activist';
+import { Podcast } from './lists/podcast';
+import { Video } from './lists/video';
+import { Book } from './lists/book';
 
 export const lists = {
 	User: User,
@@ -13,4 +16,7 @@ export const lists = {
 	Image: Image,
 	Event: Event,
 	Activist: Activist,
+	Podcast: Podcast,
+	Video: Video,
+	Book: Book,
 };

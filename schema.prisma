@@ -42,6 +42,9 @@ model Image {
   image                   Json?
   alt                     String     @default("")
   from_Activist_thumbnail Activist[] @relation("Activist_thumbnail")
+  from_Podcast_thumbnail  Podcast[]  @relation("Podcast_thumbnail")
+  from_Video_thumbnail    Video[]    @relation("Video_thumbnail")
+  from_Book_thumbnail     Book[]     @relation("Book_thumbnail")
 }
 
 model Event {
@@ -60,6 +63,37 @@ model Activist {
   thumbnail   Image?  @relation("Activist_thumbnail", fields: [thumbnailId], references: [id])
   thumbnailId String? @map("thumbnail")
   description String  @default("")
+
+  @@index([thumbnailId])
+}
+
+model Podcast {
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  thumbnail   Image?  @relation("Podcast_thumbnail", fields: [thumbnailId], references: [id])
+  thumbnailId String? @map("thumbnail")
+  description String  @default("")
+
+  @@index([thumbnailId])
+}
+
+model Video {
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  thumbnail   Image?  @relation("Video_thumbnail", fields: [thumbnailId], references: [id])
+  thumbnailId String? @map("thumbnail")
+  url         String  @default("")
+
+  @@index([thumbnailId])
+}
+
+model Book {
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  author      String  @unique @default("")
+  thumbnail   Image?  @relation("Book_thumbnail", fields: [thumbnailId], references: [id])
+  thumbnailId String? @map("thumbnail")
+  url         String  @default("")
 
   @@index([thumbnailId])
 }

@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core7 = require("@keystone-6/core");
+var import_core10 = require("@keystone-6/core");
 
 // lists/user.ts
 var import_fields = require("@keystone-6/core/fields");
@@ -210,6 +210,103 @@ var Activist = (0, import_core6.list)({
   }
 });
 
+// lists/podcast.ts
+var import_core7 = require("@keystone-6/core");
+var import_access7 = require("@keystone-6/core/access");
+var import_fields7 = require("@keystone-6/core/fields");
+var Podcast = (0, import_core7.list)({
+  access: import_access7.allowAll,
+  fields: {
+    name: (0, import_fields7.text)({
+      ui: {
+        listView: { fieldMode: "read" }
+      }
+    }),
+    thumbnail: (0, import_fields7.relationship)({
+      ref: "Image",
+      many: false,
+      ui: {
+        displayMode: "cards",
+        cardFields: ["alt"],
+        inlineEdit: { fields: ["alt"] },
+        inlineCreate: { fields: ["alt"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
+    description: (0, import_fields7.text)({
+      label: "Description",
+      ui: {
+        itemView: { fieldMode: "edit" }
+      }
+    })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["name", "thumbnail", "description"]
+    }
+  }
+});
+
+// lists/video.ts
+var import_core8 = require("@keystone-6/core");
+var import_access8 = require("@keystone-6/core/access");
+var import_fields8 = require("@keystone-6/core/fields");
+var Video = (0, import_core8.list)({
+  access: import_access8.allowAll,
+  fields: {
+    name: (0, import_fields8.text)({ label: "Title", ui: { itemView: { fieldMode: "edit" } } }),
+    thumbnail: (0, import_fields8.relationship)({
+      ref: "Image",
+      many: false,
+      ui: {
+        displayMode: "cards",
+        cardFields: ["alt"],
+        inlineEdit: { fields: ["alt"] },
+        inlineCreate: { fields: ["alt"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
+    url: (0, import_fields8.text)({ label: "URL", ui: { itemView: { fieldMode: "edit" } } })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["name", "thumbnail"]
+    }
+  }
+});
+
+// lists/book.ts
+var import_core9 = require("@keystone-6/core");
+var import_access9 = require("@keystone-6/core/access");
+var import_fields9 = require("@keystone-6/core/fields");
+var Book = (0, import_core9.list)({
+  access: import_access9.allowAll,
+  fields: {
+    name: (0, import_fields9.text)({ label: "Title" }),
+    author: (0, import_fields9.text)({ isIndexed: "unique" }),
+    thumbnail: (0, import_fields9.relationship)({
+      ref: "Image",
+      many: false,
+      ui: {
+        displayMode: "cards",
+        cardFields: ["alt"],
+        inlineEdit: { fields: ["alt"] },
+        inlineCreate: { fields: ["alt"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
+    url: (0, import_fields9.text)({ label: "URL" })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["name", "author", "thumbnail"]
+    }
+  }
+});
+
 // schema.ts
 var lists = {
   User,
@@ -217,7 +314,10 @@ var lists = {
   Tag,
   Image,
   Event,
-  Activist
+  Activist,
+  Podcast,
+  Video,
+  Book
 };
 
 // auth.ts
@@ -245,7 +345,7 @@ var session = (0, import_session.statelessSessions)({
 
 // keystone.ts
 var keystone_default = withAuth(
-  (0, import_core7.config)({
+  (0, import_core10.config)({
     db: {
       provider: "postgresql",
       url: "postgresql://me:password@localhost:5432/veganmeetup"
