@@ -38,9 +38,10 @@ model Tag {
 }
 
 model Image {
-  id    String @id @default(cuid())
-  image Json?
-  alt   String @default("")
+  id                      String     @id @default(cuid())
+  image                   Json?
+  alt                     String     @default("")
+  from_Activist_thumbnail Activist[] @relation("Activist_thumbnail")
 }
 
 model Event {
@@ -51,4 +52,14 @@ model Event {
   location  String    @default("")
   content   String    @default("")
   timestamp DateTime? @default(now())
+}
+
+model Activist {
+  id          String  @id @default(cuid())
+  name        String  @default("")
+  thumbnail   Image?  @relation("Activist_thumbnail", fields: [thumbnailId], references: [id])
+  thumbnailId String? @map("thumbnail")
+  description String  @default("")
+
+  @@index([thumbnailId])
 }

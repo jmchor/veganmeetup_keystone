@@ -427,6 +427,61 @@ input EventCreateInput {
   timestamp: DateTime
 }
 
+type Activist {
+  id: ID!
+  name: String
+  thumbnail: Image
+  description: String
+}
+
+input ActivistWhereUniqueInput {
+  id: ID
+}
+
+input ActivistWhereInput {
+  AND: [ActivistWhereInput!]
+  OR: [ActivistWhereInput!]
+  NOT: [ActivistWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  thumbnail: ImageWhereInput
+  description: StringFilter
+}
+
+input ActivistOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+}
+
+input ActivistUpdateInput {
+  name: String
+  thumbnail: ImageRelateToOneForUpdateInput
+  description: String
+}
+
+input ImageRelateToOneForUpdateInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ActivistUpdateArgs {
+  where: ActivistWhereUniqueInput!
+  data: ActivistUpdateInput!
+}
+
+input ActivistCreateInput {
+  name: String
+  thumbnail: ImageRelateToOneForCreateInput
+  description: String
+}
+
+input ImageRelateToOneForCreateInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -463,6 +518,12 @@ type Mutation {
   updateEvents(data: [EventUpdateArgs!]!): [Event]
   deleteEvent(where: EventWhereUniqueInput!): Event
   deleteEvents(where: [EventWhereUniqueInput!]!): [Event]
+  createActivist(data: ActivistCreateInput!): Activist
+  createActivists(data: [ActivistCreateInput!]!): [Activist]
+  updateActivist(where: ActivistWhereUniqueInput!, data: ActivistUpdateInput!): Activist
+  updateActivists(data: [ActivistUpdateArgs!]!): [Activist]
+  deleteActivist(where: ActivistWhereUniqueInput!): Activist
+  deleteActivists(where: [ActivistWhereUniqueInput!]!): [Activist]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -501,6 +562,9 @@ type Query {
   events(where: EventWhereInput! = {}, orderBy: [EventOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EventWhereUniqueInput): [Event!]
   event(where: EventWhereUniqueInput!): Event
   eventsCount(where: EventWhereInput! = {}): Int
+  activists(where: ActivistWhereInput! = {}, orderBy: [ActivistOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ActivistWhereUniqueInput): [Activist!]
+  activist(where: ActivistWhereUniqueInput!): Activist
+  activistsCount(where: ActivistWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

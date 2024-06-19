@@ -25,7 +25,7 @@ __export(keystone_exports, {
 module.exports = __toCommonJS(keystone_exports);
 var import_core7 = require("@keystone-6/core");
 
-// user.ts
+// lists/user.ts
 var import_fields = require("@keystone-6/core/fields");
 var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
@@ -45,7 +45,7 @@ var User = (0, import_core.list)({
   }
 });
 
-// post.ts
+// lists/post.ts
 var import_core2 = require("@keystone-6/core");
 var import_access2 = require("@keystone-6/core/access");
 var import_fields2 = require("@keystone-6/core/fields");
@@ -89,10 +89,15 @@ var Post = (0, import_core2.list)({
         inlineCreate: { fields: ["name"] }
       }
     })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["title", "author", "tags"]
+    }
   }
 });
 
-// tag.ts
+// lists/tag.ts
 var import_core3 = require("@keystone-6/core");
 var import_access3 = require("@keystone-6/core/access");
 var import_fields3 = require("@keystone-6/core/fields");
@@ -107,7 +112,7 @@ var Tag = (0, import_core3.list)({
   }
 });
 
-// image.ts
+// lists/image.ts
 var import_cloudinary = require("@keystone-6/cloudinary");
 var import_core4 = require("@keystone-6/core");
 var import_access4 = require("@keystone-6/core/access");
@@ -127,7 +132,10 @@ var Image = (0, import_core4.list)({
       label: "Source"
     }),
     alt: (0, import_fields4.text)({
-      label: "Description"
+      label: "Description",
+      ui: {
+        itemView: { fieldMode: "edit" }
+      }
     })
   },
   ui: {
@@ -137,7 +145,7 @@ var Image = (0, import_core4.list)({
   }
 });
 
-// event.ts
+// lists/event.ts
 var import_core5 = require("@keystone-6/core");
 var import_access5 = require("@keystone-6/core/access");
 var import_fields5 = require("@keystone-6/core/fields");
@@ -147,18 +155,23 @@ var Event = (0, import_core5.list)({
     title: (0, import_fields5.text)({ validation: { isRequired: true }, label: "Event title" }),
     date: (0, import_fields5.calendarDay)({ label: "Date" }),
     pastEvent: (0, import_fields5.checkbox)({ label: "Is this a past event?" }),
-    location: (0, import_fields5.text)({ label: "Location", ui: { itemView: { fieldMode: "read" } } }),
+    location: (0, import_fields5.text)({ label: "Location", ui: { itemView: { fieldMode: "edit" } } }),
     content: (0, import_fields5.text)({
       label: "Content",
       ui: {
-        itemView: { fieldMode: "read" }
+        itemView: { fieldMode: "edit" }
       }
     }),
     timestamp: (0, import_fields5.timestamp)({ defaultValue: { kind: "now" } })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["title", "date", "pastEvent"]
+    }
   }
 });
 
-// activist.ts
+// lists/activist.ts
 var import_core6 = require("@keystone-6/core");
 var import_access6 = require("@keystone-6/core/access");
 var import_fields6 = require("@keystone-6/core/fields");
@@ -166,18 +179,34 @@ var Activist = (0, import_core6.list)({
   access: import_access6.allowAll,
   fields: {
     name: (0, import_fields6.text)({
-      validation: { isRequired: true },
+      label: "Name",
       ui: {
         listView: { fieldMode: "read" }
       }
     }),
-    image: (0, import_fields6.relationship)({ ref: "Image", many: false }),
+    thumbnail: (0, import_fields6.relationship)({
+      ref: "Image",
+      many: false,
+      ui: {
+        displayMode: "cards",
+        cardFields: ["alt"],
+        inlineEdit: { fields: ["alt"] },
+        inlineCreate: { fields: ["alt"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
     description: (0, import_fields6.text)({
       label: "Description",
       ui: {
-        itemView: { fieldMode: "read" }
+        itemView: { fieldMode: "edit" }
       }
     })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["name", "thumbnail", "description"]
+    }
   }
 });
 
