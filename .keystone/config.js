@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core6 = require("@keystone-6/core");
+var import_core7 = require("@keystone-6/core");
 
 // user.ts
 var import_fields = require("@keystone-6/core/fields");
@@ -158,13 +158,37 @@ var Event = (0, import_core5.list)({
   }
 });
 
+// activist.ts
+var import_core6 = require("@keystone-6/core");
+var import_access6 = require("@keystone-6/core/access");
+var import_fields6 = require("@keystone-6/core/fields");
+var Activist = (0, import_core6.list)({
+  access: import_access6.allowAll,
+  fields: {
+    name: (0, import_fields6.text)({
+      validation: { isRequired: true },
+      ui: {
+        listView: { fieldMode: "read" }
+      }
+    }),
+    image: (0, import_fields6.relationship)({ ref: "Image", many: false }),
+    description: (0, import_fields6.text)({
+      label: "Description",
+      ui: {
+        itemView: { fieldMode: "read" }
+      }
+    })
+  }
+});
+
 // schema.ts
 var lists = {
   User,
   Post,
   Tag,
   Image,
-  Event
+  Event,
+  Activist
 };
 
 // auth.ts
@@ -192,7 +216,7 @@ var session = (0, import_session.statelessSessions)({
 
 // keystone.ts
 var keystone_default = withAuth(
-  (0, import_core6.config)({
+  (0, import_core7.config)({
     db: {
       provider: "postgresql",
       url: "postgresql://me:password@localhost:5432/veganmeetup"

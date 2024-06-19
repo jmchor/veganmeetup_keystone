@@ -1,9 +1,10 @@
 import type { Lists } from '.keystone/types';
-import { User } from './user';
-import { Post } from './post';
-import { Tag } from './tag';
-import { Image } from './image';
-import { Event } from './event';
+import { User } from './lists/user';
+import { Post } from './lists/post';
+import { Tag } from './lists/tag';
+import { Image } from './lists/image';
+import { Event } from './lists/event';
+import { Activist } from './lists/activist';
 
 export const lists = {
 	User: User,
@@ -11,4 +12,5 @@ export const lists = {
 	Tag: Tag,
 	Image: Image,
 	Event: Event,
+	Activist: Activist,
 };

@@ -22,6 +22,9 @@ export const Image = list({
 
 		alt: text({
 			label: 'Description',
+			ui: {
+				itemView: { fieldMode: 'edit' },
+			},
 		}),
 	},
 

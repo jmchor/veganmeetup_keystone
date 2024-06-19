@@ -9,13 +9,19 @@ export const Event = list({
 		title: text({ validation: { isRequired: true }, label: 'Event title' }),
 		date: calendarDay({ label: 'Date' }),
 		pastEvent: checkbox({ label: 'Is this a past event?' }),
-		location: text({ label: 'Location', ui: { itemView: { fieldMode: 'read' } } }),
+		location: text({ label: 'Location', ui: { itemView: { fieldMode: 'edit' } } }),
 		content: text({
 			label: 'Content',
 			ui: {
-				itemView: { fieldMode: 'read' },
+				itemView: { fieldMode: 'edit' },
 			},
 		}),
 		timestamp: timestamp({ defaultValue: { kind: 'now' } }),
+	},
+
+	ui: {
+		listView: {
+			initialColumns: ['title', 'date', 'pastEvent'],
+		},
 	},
 });

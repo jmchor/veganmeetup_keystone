@@ -47,4 +47,10 @@ export const Post = list({
 			},
 		}),
 	},
+
+	ui: {
+		listView: {
+			initialColumns: ['title', 'author', 'tags'],
+		},
+	},
 });
