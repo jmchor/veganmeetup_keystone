@@ -36,3 +36,19 @@ model Tag {
   name  String @default("")
   posts Post[] @relation("Post_tags")
 }
+
+model Image {
+  id    String @id @default(cuid())
+  image Json?
+  alt   String @default("")
+}
+
+model Event {
+  id        String    @id @default(cuid())
+  title     String    @default("")
+  date      DateTime? @postgresql.Date
+  pastEvent Boolean   @default(false)
+  location  String    @default("")
+  content   String    @default("")
+  timestamp DateTime? @default(now())
+}

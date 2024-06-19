@@ -260,6 +260,173 @@ input TagCreateInput {
   posts: PostRelateToManyForCreateInput
 }
 
+type Image {
+  id: ID!
+  image: CloudinaryImage_File
+  alt: String
+}
+
+type CloudinaryImage_File {
+  id: ID
+  filename: String
+  originalFilename: String
+  mimetype: String
+  encoding: String
+  publicUrl: String
+  publicUrlTransformed(transformation: CloudinaryImageFormat): String
+}
+
+"""
+Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
+All options are strings as they ultimately end up in a URL.
+"""
+input CloudinaryImageFormat {
+  """ Rewrites the filename to be this pretty string. Do not include `/` or `.`
+  """
+  prettyName: String
+  width: String
+  height: String
+  crop: String
+  aspect_ratio: String
+  gravity: String
+  zoom: String
+  x: String
+  y: String
+  format: String
+  fetch_format: String
+  quality: String
+  radius: String
+  angle: String
+  effect: String
+  opacity: String
+  border: String
+  background: String
+  overlay: String
+  underlay: String
+  default_image: String
+  delay: String
+  color: String
+  color_space: String
+  dpr: String
+  page: String
+  density: String
+  flags: String
+  transformation: String
+}
+
+input ImageWhereUniqueInput {
+  id: ID
+}
+
+input ImageWhereInput {
+  AND: [ImageWhereInput!]
+  OR: [ImageWhereInput!]
+  NOT: [ImageWhereInput!]
+  id: IDFilter
+  alt: StringFilter
+}
+
+input ImageOrderByInput {
+  id: OrderDirection
+  alt: OrderDirection
+}
+
+input ImageUpdateInput {
+  image: Upload
+  alt: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input ImageUpdateArgs {
+  where: ImageWhereUniqueInput!
+  data: ImageUpdateInput!
+}
+
+input ImageCreateInput {
+  image: Upload
+  alt: String
+}
+
+type Event {
+  id: ID!
+  title: String
+  date: CalendarDay
+  pastEvent: Boolean
+  location: String
+  content: String
+  timestamp: DateTime
+}
+
+scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input EventWhereUniqueInput {
+  id: ID
+}
+
+input EventWhereInput {
+  AND: [EventWhereInput!]
+  OR: [EventWhereInput!]
+  NOT: [EventWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  date: CalendarDayNullableFilter
+  pastEvent: BooleanFilter
+  location: StringFilter
+  content: StringFilter
+  timestamp: DateTimeNullableFilter
+}
+
+input CalendarDayNullableFilter {
+  equals: CalendarDay
+  in: [CalendarDay!]
+  notIn: [CalendarDay!]
+  lt: CalendarDay
+  lte: CalendarDay
+  gt: CalendarDay
+  gte: CalendarDay
+  not: CalendarDayNullableFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input EventOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  date: OrderDirection
+  pastEvent: OrderDirection
+  location: OrderDirection
+  content: OrderDirection
+  timestamp: OrderDirection
+}
+
+input EventUpdateInput {
+  title: String
+  date: CalendarDay
+  pastEvent: Boolean
+  location: String
+  content: String
+  timestamp: DateTime
+}
+
+input EventUpdateArgs {
+  where: EventWhereUniqueInput!
+  data: EventUpdateInput!
+}
+
+input EventCreateInput {
+  title: String
+  date: CalendarDay
+  pastEvent: Boolean
+  location: String
+  content: String
+  timestamp: DateTime
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -284,6 +451,18 @@ type Mutation {
   updateTags(data: [TagUpdateArgs!]!): [Tag]
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createImage(data: ImageCreateInput!): Image
+  createImages(data: [ImageCreateInput!]!): [Image]
+  updateImage(where: ImageWhereUniqueInput!, data: ImageUpdateInput!): Image
+  updateImages(data: [ImageUpdateArgs!]!): [Image]
+  deleteImage(where: ImageWhereUniqueInput!): Image
+  deleteImages(where: [ImageWhereUniqueInput!]!): [Image]
+  createEvent(data: EventCreateInput!): Event
+  createEvents(data: [EventCreateInput!]!): [Event]
+  updateEvent(where: EventWhereUniqueInput!, data: EventUpdateInput!): Event
+  updateEvents(data: [EventUpdateArgs!]!): [Event]
+  deleteEvent(where: EventWhereUniqueInput!): Event
+  deleteEvents(where: [EventWhereUniqueInput!]!): [Event]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -316,6 +495,12 @@ type Query {
   tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tag(where: TagWhereUniqueInput!): Tag
   tagsCount(where: TagWhereInput! = {}): Int
+  images(where: ImageWhereInput! = {}, orderBy: [ImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ImageWhereUniqueInput): [Image!]
+  image(where: ImageWhereUniqueInput!): Image
+  imagesCount(where: ImageWhereInput! = {}): Int
+  events(where: EventWhereInput! = {}, orderBy: [EventOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EventWhereUniqueInput): [Event!]
+  event(where: EventWhereUniqueInput!): Event
+  eventsCount(where: EventWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

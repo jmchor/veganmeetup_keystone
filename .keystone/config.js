@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core4 = require("@keystone-6/core");
+var import_core6 = require("@keystone-6/core");
 
 // user.ts
 var import_fields = require("@keystone-6/core/fields");
@@ -107,11 +107,64 @@ var Tag = (0, import_core3.list)({
   }
 });
 
+// image.ts
+var import_cloudinary = require("@keystone-6/cloudinary");
+var import_core4 = require("@keystone-6/core");
+var import_access4 = require("@keystone-6/core/access");
+var import_fields4 = require("@keystone-6/core/fields");
+var import_config = require("dotenv/config");
+var cloudinary = {
+  cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  apiKey: process.env.CLOUDINARY_KEY,
+  apiSecret: process.env.CLOUDINARY_SECRET,
+  folder: process.env.CLOUDINARY_API_FOLDER
+};
+var Image = (0, import_core4.list)({
+  access: import_access4.allowAll,
+  fields: {
+    image: (0, import_cloudinary.cloudinaryImage)({
+      cloudinary,
+      label: "Source"
+    }),
+    alt: (0, import_fields4.text)({
+      label: "Description"
+    })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["image", "alt"]
+    }
+  }
+});
+
+// event.ts
+var import_core5 = require("@keystone-6/core");
+var import_access5 = require("@keystone-6/core/access");
+var import_fields5 = require("@keystone-6/core/fields");
+var Event = (0, import_core5.list)({
+  access: import_access5.allowAll,
+  fields: {
+    title: (0, import_fields5.text)({ validation: { isRequired: true }, label: "Event title" }),
+    date: (0, import_fields5.calendarDay)({ label: "Date" }),
+    pastEvent: (0, import_fields5.checkbox)({ label: "Is this a past event?" }),
+    location: (0, import_fields5.text)({ label: "Location", ui: { itemView: { fieldMode: "read" } } }),
+    content: (0, import_fields5.text)({
+      label: "Content",
+      ui: {
+        itemView: { fieldMode: "read" }
+      }
+    }),
+    timestamp: (0, import_fields5.timestamp)({ defaultValue: { kind: "now" } })
+  }
+});
+
 // schema.ts
 var lists = {
   User,
   Post,
-  Tag
+  Tag,
+  Image,
+  Event
 };
 
 // auth.ts
@@ -125,20 +178,10 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
-  // this is a GraphQL query fragment for fetching what data will be attached to a context.session
-  //   this can be helpful for when you are writing your access control functions
-  //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
   sessionData: "name createdAt",
   secretField: "password",
-  // WARNING: remove initFirstItem functionality in production
-  //   see https://keystonejs.com/docs/config/auth#init-first-item for more
   initFirstItem: {
-    // if there are no items in the database, by configuring this field
-    //   you are asking the Keystone AdminUI to create a new user
-    //   providing inputs for these fields
     fields: ["name", "email", "password"]
-    // it uses context.sudo() to do this, which bypasses any access control you might have
-    //   you shouldn't use this in production
   }
 });
 var sessionMaxAge = 60 * 60 * 24 * 30;
@@ -149,7 +192,7 @@ var session = (0, import_session.statelessSessions)({
 
 // keystone.ts
 var keystone_default = withAuth(
-  (0, import_core4.config)({
+  (0, import_core6.config)({
     db: {
       provider: "postgresql",
       url: "postgresql://me:password@localhost:5432/veganmeetup"
