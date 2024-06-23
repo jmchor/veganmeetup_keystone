@@ -12,7 +12,7 @@ export default config(
 		},
 		db: {
 			provider: 'postgresql',
-			url: 'postgresql://me:password@localhost:5432/veganmeetup',
+			url: 'postgresql://me:password@localhost:5432/veganmeetup_dev',
 		},
 		lists,
 		session,
