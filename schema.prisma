@@ -41,6 +41,7 @@ model Image {
   id                      String     @id @default(cuid())
   image                   Json?
   alt                     String     @default("")
+  category                String?    @default("background")
   from_Activist_thumbnail Activist[] @relation("Activist_thumbnail")
   from_Podcast_thumbnail  Podcast[]  @relation("Podcast_thumbnail")
   from_Video_thumbnail    Video[]    @relation("Video_thumbnail")

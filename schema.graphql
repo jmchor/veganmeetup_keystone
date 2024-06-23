@@ -264,6 +264,7 @@ type Image {
   id: ID!
   image: CloudinaryImage_File
   alt: String
+  category: String
 }
 
 type CloudinaryImage_File {
@@ -324,16 +325,34 @@ input ImageWhereInput {
   NOT: [ImageWhereInput!]
   id: IDFilter
   alt: StringFilter
+  category: StringNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilter
 }
 
 input ImageOrderByInput {
   id: OrderDirection
   alt: OrderDirection
+  category: OrderDirection
 }
 
 input ImageUpdateInput {
   image: Upload
   alt: String
+  category: String
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -347,6 +366,7 @@ input ImageUpdateArgs {
 input ImageCreateInput {
   image: Upload
   alt: String
+  category: String
 }
 
 type Event {
