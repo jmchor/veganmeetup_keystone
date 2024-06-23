@@ -136,6 +136,22 @@ var Image = (0, import_core4.list)({
       ui: {
         itemView: { fieldMode: "edit" }
       }
+    }),
+    category: (0, import_fields4.select)({
+      options: [
+        { label: "Masonry", value: "masonry" },
+        { label: "Articles", value: "articles" },
+        { label: "Activists", value: "activists" },
+        { label: "Podcasts", value: "podcasts" },
+        { label: "Books", value: "books" },
+        { label: "Videos", value: "videos" },
+        { label: "Timeline", value: "timeline" },
+        { label: "General", value: "general" }
+      ],
+      defaultValue: "background",
+      ui: {
+        itemView: { fieldMode: "edit" }
+      }
     })
   },
   ui: {
@@ -344,8 +360,14 @@ var session = (0, import_session.statelessSessions)({
 });
 
 // keystone.ts
-var keystone_default = withAuth(
-  (0, import_core10.config)({
+var keystone_default = (0, import_core10.config)(
+  withAuth({
+    server: {
+      cors: {
+        origin: ["http://localhost:5173"],
+        credentials: true
+      }
+    },
     db: {
       provider: "postgresql",
       url: "postgresql://me:password@localhost:5432/veganmeetup"
