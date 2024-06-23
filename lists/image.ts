@@ -1,7 +1,7 @@
 import { cloudinaryImage } from '@keystone-6/cloudinary';
 import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
-import { text } from '@keystone-6/core/fields';
+import { select, text } from '@keystone-6/core/fields';
 import 'dotenv/config';
 
 export const cloudinary = {
@@ -22,6 +22,23 @@ export const Image = list({
 
 		alt: text({
 			label: 'Description',
+			ui: {
+				itemView: { fieldMode: 'edit' },
+			},
+		}),
+
+		category: select({
+			options: [
+				{ label: 'Masonry', value: 'masonry' },
+				{ label: 'Articles', value: 'articles' },
+				{ label: 'Activists', value: 'activists' },
+				{ label: 'Podcasts', value: 'podcasts' },
+				{ label: 'Books', value: 'books' },
+				{ label: 'Videos', value: 'videos' },
+				{ label: 'Timeline', value: 'timeline' },
+				{ label: 'General', value: 'general' },
+			],
+			defaultValue: 'background',
 			ui: {
 				itemView: { fieldMode: 'edit' },
 			},
