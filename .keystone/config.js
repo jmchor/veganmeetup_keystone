@@ -24,6 +24,30 @@ __export(keystone_exports, {
 });
 module.exports = __toCommonJS(keystone_exports);
 var import_core10 = require("@keystone-6/core");
+var import_config2 = require("dotenv/config");
+
+// auth.ts
+var import_crypto = require("crypto");
+var import_auth = require("@keystone-6/auth");
+var import_session = require("@keystone-6/core/session");
+var sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret && process.env.NODE_ENV !== "production") {
+  sessionSecret = (0, import_crypto.randomBytes)(32).toString("hex");
+}
+var { withAuth } = (0, import_auth.createAuth)({
+  listKey: "User",
+  identityField: "email",
+  sessionData: "name createdAt",
+  secretField: "password",
+  initFirstItem: {
+    fields: ["name", "email", "password"]
+  }
+});
+var sessionMaxAge = 60 * 60 * 24 * 30;
+var session = (0, import_session.statelessSessions)({
+  maxAge: sessionMaxAge,
+  secret: sessionSecret
+});
 
 // lists/user.ts
 var import_fields = require("@keystone-6/core/fields");
@@ -371,30 +395,10 @@ var lists = {
   Book
 };
 
-// auth.ts
-var import_crypto = require("crypto");
-var import_auth = require("@keystone-6/auth");
-var import_session = require("@keystone-6/core/session");
-var sessionSecret = process.env.SESSION_SECRET;
-if (!sessionSecret && process.env.NODE_ENV !== "production") {
-  sessionSecret = (0, import_crypto.randomBytes)(32).toString("hex");
-}
-var { withAuth } = (0, import_auth.createAuth)({
-  listKey: "User",
-  identityField: "email",
-  sessionData: "name createdAt",
-  secretField: "password",
-  initFirstItem: {
-    fields: ["name", "email", "password"]
-  }
-});
-var sessionMaxAge = 60 * 60 * 24 * 30;
-var session = (0, import_session.statelessSessions)({
-  maxAge: sessionMaxAge,
-  secret: sessionSecret
-});
-
 // keystone.ts
+var DB_USER = process.env.DB_USER;
+var DB_PASSWORD = process.env.DB_PASSWORD;
+var DB_NAME = process.env.DB_NAME;
 var keystone_default = (0, import_core10.config)(
   withAuth({
     server: {
@@ -405,7 +409,7 @@ var keystone_default = (0, import_core10.config)(
     },
     db: {
       provider: "postgresql",
-      url: "postgresql://me:password@localhost:5432/veganmeetup_dev"
+      url: `postgresql://${DB_USER}:${DB_PASSWORD}@localhost:5432/${DB_NAME}`
     },
     lists,
     session

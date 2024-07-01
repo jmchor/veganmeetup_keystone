@@ -1,6 +1,11 @@
 import { config } from '@keystone-6/core';
-import { lists } from './schema';
+import 'dotenv/config';
 import { session, withAuth } from './auth';
+import { lists } from './schema';
+
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
 
 export default config(
 	withAuth({
@@ -12,7 +17,7 @@ export default config(
 		},
 		db: {
 			provider: 'postgresql',
-			url: 'postgresql://me:password@localhost:5432/veganmeetup_dev',
+			url: `postgresql://${DB_USER}:${DB_PASSWORD}@localhost:5432/${DB_NAME}`,
 		},
 		lists,
 		session,
