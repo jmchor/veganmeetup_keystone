@@ -13,14 +13,20 @@ export const Book = list({
 			many: false,
 			ui: {
 				displayMode: 'cards',
-				cardFields: ['alt'],
-				inlineEdit: { fields: ['alt'] },
-				inlineCreate: { fields: ['alt'] },
+				cardFields: ['alt', 'image', 'category'],
+				inlineEdit: { fields: ['alt', 'image', 'category'] },
+				inlineCreate: { fields: ['alt', 'image', 'category'] },
 				linkToItem: true,
 				inlineConnect: true,
 			},
 		}),
 		url: text({ label: 'URL' }),
+		description: text({
+			label: 'Description',
+			ui: {
+				itemView: { fieldMode: 'edit' },
+			},
+		}),
 	},
 	ui: {
 		listView: {

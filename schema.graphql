@@ -372,14 +372,21 @@ input ImageCreateInput {
 type Event {
   id: ID!
   title: String
+  headerImage: Image
   date: CalendarDay
+  from: String
+  until: String
   pastEvent: Boolean
   location: String
-  content: String
+  content: Event_content_Document
   timestamp: DateTime
 }
 
 scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+type Event_content_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
 
 input EventWhereUniqueInput {
   id: ID
@@ -391,10 +398,12 @@ input EventWhereInput {
   NOT: [EventWhereInput!]
   id: IDFilter
   title: StringFilter
+  headerImage: ImageWhereInput
   date: CalendarDayNullableFilter
+  from: StringFilter
+  until: StringFilter
   pastEvent: BooleanFilter
   location: StringFilter
-  content: StringFilter
   timestamp: DateTimeNullableFilter
 }
 
@@ -418,19 +427,29 @@ input EventOrderByInput {
   id: OrderDirection
   title: OrderDirection
   date: OrderDirection
+  from: OrderDirection
+  until: OrderDirection
   pastEvent: OrderDirection
   location: OrderDirection
-  content: OrderDirection
   timestamp: OrderDirection
 }
 
 input EventUpdateInput {
   title: String
+  headerImage: ImageRelateToOneForUpdateInput
   date: CalendarDay
+  from: String
+  until: String
   pastEvent: Boolean
   location: String
-  content: String
+  content: JSON
   timestamp: DateTime
+}
+
+input ImageRelateToOneForUpdateInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
+  disconnect: Boolean
 }
 
 input EventUpdateArgs {
@@ -440,16 +459,25 @@ input EventUpdateArgs {
 
 input EventCreateInput {
   title: String
+  headerImage: ImageRelateToOneForCreateInput
   date: CalendarDay
+  from: String
+  until: String
   pastEvent: Boolean
   location: String
-  content: String
+  content: JSON
   timestamp: DateTime
+}
+
+input ImageRelateToOneForCreateInput {
+  create: ImageCreateInput
+  connect: ImageWhereUniqueInput
 }
 
 type Activist {
   id: ID!
   name: String
+  url: String
   thumbnail: Image
   description: String
 }
@@ -464,6 +492,7 @@ input ActivistWhereInput {
   NOT: [ActivistWhereInput!]
   id: IDFilter
   name: StringFilter
+  url: StringFilter
   thumbnail: ImageWhereInput
   description: StringFilter
 }
@@ -471,19 +500,15 @@ input ActivistWhereInput {
 input ActivistOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  url: OrderDirection
   description: OrderDirection
 }
 
 input ActivistUpdateInput {
   name: String
+  url: String
   thumbnail: ImageRelateToOneForUpdateInput
   description: String
-}
-
-input ImageRelateToOneForUpdateInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
-  disconnect: Boolean
 }
 
 input ActivistUpdateArgs {
@@ -493,18 +518,15 @@ input ActivistUpdateArgs {
 
 input ActivistCreateInput {
   name: String
+  url: String
   thumbnail: ImageRelateToOneForCreateInput
   description: String
-}
-
-input ImageRelateToOneForCreateInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
 }
 
 type Podcast {
   id: ID!
   name: String
+  url: String
   thumbnail: Image
   description: String
 }
@@ -519,6 +541,7 @@ input PodcastWhereInput {
   NOT: [PodcastWhereInput!]
   id: IDFilter
   name: StringFilter
+  url: StringFilter
   thumbnail: ImageWhereInput
   description: StringFilter
 }
@@ -526,11 +549,13 @@ input PodcastWhereInput {
 input PodcastOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  url: OrderDirection
   description: OrderDirection
 }
 
 input PodcastUpdateInput {
   name: String
+  url: String
   thumbnail: ImageRelateToOneForUpdateInput
   description: String
 }
@@ -542,6 +567,7 @@ input PodcastUpdateArgs {
 
 input PodcastCreateInput {
   name: String
+  url: String
   thumbnail: ImageRelateToOneForCreateInput
   description: String
 }
@@ -551,6 +577,7 @@ type Video {
   name: String
   thumbnail: Image
   url: String
+  description: String
 }
 
 input VideoWhereUniqueInput {
@@ -565,18 +592,21 @@ input VideoWhereInput {
   name: StringFilter
   thumbnail: ImageWhereInput
   url: StringFilter
+  description: StringFilter
 }
 
 input VideoOrderByInput {
   id: OrderDirection
   name: OrderDirection
   url: OrderDirection
+  description: OrderDirection
 }
 
 input VideoUpdateInput {
   name: String
   thumbnail: ImageRelateToOneForUpdateInput
   url: String
+  description: String
 }
 
 input VideoUpdateArgs {
@@ -588,6 +618,7 @@ input VideoCreateInput {
   name: String
   thumbnail: ImageRelateToOneForCreateInput
   url: String
+  description: String
 }
 
 type Book {
@@ -596,6 +627,7 @@ type Book {
   author: String
   thumbnail: Image
   url: String
+  description: String
 }
 
 input BookWhereUniqueInput {
@@ -612,6 +644,7 @@ input BookWhereInput {
   author: StringFilter
   thumbnail: ImageWhereInput
   url: StringFilter
+  description: StringFilter
 }
 
 input BookOrderByInput {
@@ -619,6 +652,7 @@ input BookOrderByInput {
   name: OrderDirection
   author: OrderDirection
   url: OrderDirection
+  description: OrderDirection
 }
 
 input BookUpdateInput {
@@ -626,6 +660,7 @@ input BookUpdateInput {
   author: String
   thumbnail: ImageRelateToOneForUpdateInput
   url: String
+  description: String
 }
 
 input BookUpdateArgs {
@@ -638,6 +673,7 @@ input BookCreateInput {
   author: String
   thumbnail: ImageRelateToOneForCreateInput
   url: String
+  description: String
 }
 
 """

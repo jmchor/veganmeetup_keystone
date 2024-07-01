@@ -42,6 +42,7 @@ model Image {
   image                   Json?
   alt                     String     @default("")
   category                String?    @default("background")
+  from_Event_headerImage  Event[]    @relation("Event_headerImage")
   from_Activist_thumbnail Activist[] @relation("Activist_thumbnail")
   from_Podcast_thumbnail  Podcast[]  @relation("Podcast_thumbnail")
   from_Video_thumbnail    Video[]    @relation("Video_thumbnail")
@@ -49,18 +50,25 @@ model Image {
 }
 
 model Event {
-  id        String    @id @default(cuid())
-  title     String    @default("")
-  date      DateTime? @postgresql.Date
-  pastEvent Boolean   @default(false)
-  location  String    @default("")
-  content   String    @default("")
-  timestamp DateTime? @default(now())
+  id            String    @id @default(cuid())
+  title         String    @default("")
+  headerImage   Image?    @relation("Event_headerImage", fields: [headerImageId], references: [id])
+  headerImageId String?   @map("headerImage")
+  date          DateTime? @postgresql.Date
+  from          String    @default("")
+  until         String    @default("")
+  pastEvent     Boolean   @default(false)
+  location      String    @default("")
+  content       Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  timestamp     DateTime? @default(now())
+
+  @@index([headerImageId])
 }
 
 model Activist {
   id          String  @id @default(cuid())
   name        String  @default("")
+  url         String  @default("")
   thumbnail   Image?  @relation("Activist_thumbnail", fields: [thumbnailId], references: [id])
   thumbnailId String? @map("thumbnail")
   description String  @default("")
@@ -71,6 +79,7 @@ model Activist {
 model Podcast {
   id          String  @id @default(cuid())
   name        String  @default("")
+  url         String  @default("")
   thumbnail   Image?  @relation("Podcast_thumbnail", fields: [thumbnailId], references: [id])
   thumbnailId String? @map("thumbnail")
   description String  @default("")
@@ -84,6 +93,7 @@ model Video {
   thumbnail   Image?  @relation("Video_thumbnail", fields: [thumbnailId], references: [id])
   thumbnailId String? @map("thumbnail")
   url         String  @default("")
+  description String  @default("")
 
   @@index([thumbnailId])
 }
@@ -95,6 +105,7 @@ model Book {
   thumbnail   Image?  @relation("Book_thumbnail", fields: [thumbnailId], references: [id])
   thumbnailId String? @map("thumbnail")
   url         String  @default("")
+  description String  @default("")
 
   @@index([thumbnailId])
 }

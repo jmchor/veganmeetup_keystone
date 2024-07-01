@@ -165,18 +165,39 @@ var Image = (0, import_core4.list)({
 var import_core5 = require("@keystone-6/core");
 var import_access5 = require("@keystone-6/core/access");
 var import_fields5 = require("@keystone-6/core/fields");
+var import_fields_document2 = require("@keystone-6/fields-document");
 var Event = (0, import_core5.list)({
   access: import_access5.allowAll,
   fields: {
     title: (0, import_fields5.text)({ validation: { isRequired: true }, label: "Event title" }),
+    headerImage: (0, import_fields5.relationship)({
+      ref: "Image",
+      many: false,
+      ui: {
+        displayMode: "cards",
+        cardFields: ["alt", "image"],
+        inlineEdit: { fields: ["alt", "image"] },
+        inlineCreate: { fields: ["alt", "image"] },
+        linkToItem: true,
+        inlineConnect: true
+      }
+    }),
     date: (0, import_fields5.calendarDay)({ label: "Date" }),
+    from: (0, import_fields5.text)({ label: "From", ui: { itemView: { fieldMode: "edit" } } }),
+    until: (0, import_fields5.text)({ label: "Until", ui: { itemView: { fieldMode: "edit" } } }),
     pastEvent: (0, import_fields5.checkbox)({ label: "Is this a past event?" }),
     location: (0, import_fields5.text)({ label: "Location", ui: { itemView: { fieldMode: "edit" } } }),
-    content: (0, import_fields5.text)({
-      label: "Content",
-      ui: {
-        itemView: { fieldMode: "edit" }
-      }
+    content: (0, import_fields_document2.document)({
+      formatting: true,
+      layouts: [
+        [1, 1],
+        [1, 1, 1],
+        [2, 1],
+        [1, 2],
+        [1, 2, 1]
+      ],
+      links: true,
+      dividers: true
     }),
     timestamp: (0, import_fields5.timestamp)({ defaultValue: { kind: "now" } })
   },
@@ -200,14 +221,15 @@ var Activist = (0, import_core6.list)({
         listView: { fieldMode: "read" }
       }
     }),
+    url: (0, import_fields6.text)({ label: "URL", ui: { itemView: { fieldMode: "edit" } } }),
     thumbnail: (0, import_fields6.relationship)({
       ref: "Image",
       many: false,
       ui: {
         displayMode: "cards",
-        cardFields: ["alt"],
-        inlineEdit: { fields: ["alt"] },
-        inlineCreate: { fields: ["alt"] },
+        cardFields: ["alt", "image", "category"],
+        inlineEdit: { fields: ["alt", "image", "category"] },
+        inlineCreate: { fields: ["alt", "image", "category"] },
         linkToItem: true,
         inlineConnect: true
       }
@@ -238,14 +260,15 @@ var Podcast = (0, import_core7.list)({
         listView: { fieldMode: "read" }
       }
     }),
+    url: (0, import_fields7.text)({ label: "URL", ui: { itemView: { fieldMode: "edit" } } }),
     thumbnail: (0, import_fields7.relationship)({
       ref: "Image",
       many: false,
       ui: {
         displayMode: "cards",
-        cardFields: ["alt"],
-        inlineEdit: { fields: ["alt"] },
-        inlineCreate: { fields: ["alt"] },
+        cardFields: ["alt", "image", "category"],
+        inlineEdit: { fields: ["alt", "image", "category"] },
+        inlineCreate: { fields: ["alt", "image", "category"] },
         linkToItem: true,
         inlineConnect: true
       }
@@ -277,14 +300,20 @@ var Video = (0, import_core8.list)({
       many: false,
       ui: {
         displayMode: "cards",
-        cardFields: ["alt"],
-        inlineEdit: { fields: ["alt"] },
-        inlineCreate: { fields: ["alt"] },
+        cardFields: ["alt", "image", "category"],
+        inlineEdit: { fields: ["alt", "image", "category"] },
+        inlineCreate: { fields: ["alt", "image", "category"] },
         linkToItem: true,
         inlineConnect: true
       }
     }),
-    url: (0, import_fields8.text)({ label: "URL", ui: { itemView: { fieldMode: "edit" } } })
+    url: (0, import_fields8.text)({ label: "URL", ui: { itemView: { fieldMode: "edit" } } }),
+    description: (0, import_fields8.text)({
+      label: "Description",
+      ui: {
+        itemView: { fieldMode: "edit" }
+      }
+    })
   },
   ui: {
     listView: {
@@ -307,14 +336,20 @@ var Book = (0, import_core9.list)({
       many: false,
       ui: {
         displayMode: "cards",
-        cardFields: ["alt"],
-        inlineEdit: { fields: ["alt"] },
-        inlineCreate: { fields: ["alt"] },
+        cardFields: ["alt", "image", "category"],
+        inlineEdit: { fields: ["alt", "image", "category"] },
+        inlineCreate: { fields: ["alt", "image", "category"] },
         linkToItem: true,
         inlineConnect: true
       }
     }),
-    url: (0, import_fields9.text)({ label: "URL" })
+    url: (0, import_fields9.text)({ label: "URL" }),
+    description: (0, import_fields9.text)({
+      label: "Description",
+      ui: {
+        itemView: { fieldMode: "edit" }
+      }
+    })
   },
   ui: {
     listView: {
@@ -370,7 +405,7 @@ var keystone_default = (0, import_core10.config)(
     },
     db: {
       provider: "postgresql",
-      url: "postgresql://me:password@localhost:5432/veganmeetup"
+      url: "postgresql://me:password@localhost:5432/veganmeetup_dev"
     },
     lists,
     session

@@ -12,14 +12,15 @@ export const Activist = list({
 				listView: { fieldMode: 'read' },
 			},
 		}),
+		url: text({ label: 'URL', ui: { itemView: { fieldMode: 'edit' } } }),
 		thumbnail: relationship({
 			ref: 'Image',
 			many: false,
 			ui: {
 				displayMode: 'cards',
-				cardFields: ['alt'],
-				inlineEdit: { fields: ['alt'] },
-				inlineCreate: { fields: ['alt'] },
+				cardFields: ['alt', 'image', 'category'],
+				inlineEdit: { fields: ['alt', 'image', 'category'] },
+				inlineCreate: { fields: ['alt', 'image', 'category'] },
 				linkToItem: true,
 				inlineConnect: true,
 			},
